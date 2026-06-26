@@ -127,8 +127,14 @@
     // Chiama anche prima che il font carichi (per il torus)
     scaleGroupToViewport();
 
+    // ── Clock per animazione delta-based ─────────────────────────────────────
+    const clock = new THREE.Clock();
+    const ROTATION_PERIOD = 8; // secondi per giro completo
+
     // ── Render loop placeholder ───────────────────────────────────────────────
     renderer.setAnimationLoop(() => {
+      const delta = clock.getDelta();
+      group.rotation.y += (Math.PI * 2 / ROTATION_PERIOD) * delta;
       renderer.render(scene, camera);
     });
 
