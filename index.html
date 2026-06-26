@@ -52,21 +52,27 @@
     scene.environment = pmremGenerator.fromScene(new RoomEnvironment()).texture;
     pmremGenerator.dispose();
 
-    // ── Materiale nero lucido (condiviso tra anello e M) ─────────────────────
-    const material = new THREE.MeshStandardMaterial({
+    // ── Materiale lacca nera (condiviso tra anello e M) ──────────────────────
+    // MeshPhysicalMaterial con clearcoat: i riflessi speculari sono bianchi
+    // anche su base nera, come vera lacca piano. MeshStandardMaterial con
+    // metalness alto colora i riflessi con il colore base (quasi nero → invisibili).
+    const material = new THREE.MeshPhysicalMaterial({
       color: 0x080808,
       roughness: 0.05,
-      metalness: 0.95,
+      metalness: 0.0,
+      clearcoat: 1.0,
+      clearcoatRoughness: 0.02,
+      envMapIntensity: 1.5,
     });
 
     // ── Luci ──────────────────────────────────────────────────────────────────
     scene.add(new THREE.AmbientLight(0xffffff, 0.08));
 
-    const mainLight = new THREE.PointLight(0xffffff, 3.0, 0);
+    const mainLight = new THREE.PointLight(0xffffff, 6.0, 0);
     mainLight.position.set(-3, 3, 4);
     scene.add(mainLight);
 
-    const fillLight = new THREE.PointLight(0xffffff, 0.5, 0);
+    const fillLight = new THREE.PointLight(0xffffff, 1.5, 0);
     fillLight.position.set(3, -2, 3);
     scene.add(fillLight);
 
