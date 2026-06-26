@@ -31,6 +31,8 @@
   <script type="module">
     import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.165.0/build/three.module.js';
     import { RoomEnvironment } from 'https://cdn.jsdelivr.net/npm/three@0.165.0/examples/jsm/environments/RoomEnvironment.js';
+    import { FontLoader } from 'https://cdn.jsdelivr.net/npm/three@0.165.0/examples/jsm/loaders/FontLoader.js';
+    import { TextGeometry } from 'https://cdn.jsdelivr.net/npm/three@0.165.0/examples/jsm/geometries/TextGeometry.js';
 
     // ── Renderer ──────────────────────────────────────────────────────────────
     const renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -79,6 +81,52 @@
     );
     group.add(torus);
 
+    // ── Scala il gruppo per riempire ~85% dell'asse più corto della viewport ──
+    function scaleGroupToViewport() {
+      const vFOV = THREE.MathUtils.degToRad(camera.fov);
+      const visibleHeight = 2 * Math.tan(vFOV / 2) * camera.position.z;
+      const visibleWidth = visibleHeight * camera.aspect;
+      const shorter = Math.min(visibleHeight, visibleWidth);
+      // Il torus ha diametro 4 unità (raggio 2)
+      group.scale.setScalar((shorter * 0.85) / 4);
+    }
+
+    // ── Font loader + M geometry ───────────────────────────────────────────────
+    const fontLoader = new FontLoader();
+    fontLoader.load(
+      'https://cdn.jsdelivr.net/npm/three@0.165.0/examples/fonts/optimer_bold.typeface.json',
+      (font) => {
+        const textGeo = new TextGeometry('M', {
+          font,
+          size: 1.8,
+          depth: 0.15,
+          curveSegments: 12,
+          bevelEnabled: true,
+          bevelThickness: 0.02,
+          bevelSize: 0.01,
+          bevelSegments: 5,
+        });
+
+        // Centra la M nell'origine
+        textGeo.computeBoundingBox();
+        const bb = textGeo.boundingBox;
+        textGeo.translate(
+          -(bb.max.x + bb.min.x) / 2,
+          -(bb.max.y + bb.min.y) / 2,
+          -(bb.max.z + bb.min.z) / 2
+        );
+
+        const mMesh = new THREE.Mesh(textGeo, material);
+        group.add(mMesh);
+
+        // Applica scaling ora che la M è nel gruppo
+        scaleGroupToViewport();
+      }
+    );
+
+    // Chiama anche prima che il font carichi (per il torus)
+    scaleGroupToViewport();
+
     // ── Render loop placeholder ───────────────────────────────────────────────
     renderer.setAnimationLoop(() => {
       renderer.render(scene, camera);
@@ -89,6 +137,7 @@
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
       renderer.setSize(window.innerWidth, window.innerHeight);
+      scaleGroupToViewport();
     });
   </script>
 </body>
