@@ -68,6 +68,17 @@
     fillLight.position.set(3, -2, 3);
     scene.add(fillLight);
 
+    // ── Group (contiene anello + M, ruota insieme) ────────────────────────────
+    const group = new THREE.Group();
+    scene.add(group);
+
+    // ── Cerchio (torus) ───────────────────────────────────────────────────────
+    const torus = new THREE.Mesh(
+      new THREE.TorusGeometry(2, 0.06, 16, 100),
+      material
+    );
+    group.add(torus);
+
     // ── Render loop placeholder ───────────────────────────────────────────────
     renderer.setAnimationLoop(() => {
       renderer.render(scene, camera);
