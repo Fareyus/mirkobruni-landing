@@ -131,7 +131,7 @@
     const clock = new THREE.Clock();
     const ROTATION_PERIOD = 8; // secondi per giro completo
 
-    // ── Render loop placeholder ───────────────────────────────────────────────
+    // ── Animation loop ────────────────────────────────────────────────────────
     renderer.setAnimationLoop(() => {
       const delta = clock.getDelta();
       group.rotation.y += (Math.PI * 2 / ROTATION_PERIOD) * delta;
