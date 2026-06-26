@@ -47,7 +47,7 @@
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 0.35;
+    renderer.toneMappingExposure = 0.12;
     document.body.appendChild(renderer.domElement);
 
     // ── Scene + camera ────────────────────────────────────────────────────────
@@ -67,7 +67,7 @@
       metalness: 0.0,
       clearcoat: 1.0,
       clearcoatRoughness: 0.25,
-      envMapIntensity: 0.04,
+      envMapIntensity: 0.02,
     });
 
     // ── Luci ──────────────────────────────────────────────────────────────────
