@@ -30,6 +30,7 @@
   <a id="link" href="#">·</a>
   <script type="module">
     import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.165.0/build/three.module.js';
+    import { RoomEnvironment } from 'https://cdn.jsdelivr.net/npm/three@0.165.0/examples/jsm/environments/RoomEnvironment.js';
 
     // ── Renderer ──────────────────────────────────────────────────────────────
     const renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -43,6 +44,29 @@
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
     camera.position.z = 5;
+
+    // ── Environment map (neutra, per il gloss) ────────────────────────────────
+    const pmremGenerator = new THREE.PMREMGenerator(renderer);
+    scene.environment = pmremGenerator.fromScene(new RoomEnvironment()).texture;
+    pmremGenerator.dispose();
+
+    // ── Materiale nero lucido (condiviso tra anello e M) ─────────────────────
+    const material = new THREE.MeshStandardMaterial({
+      color: 0x080808,
+      roughness: 0.05,
+      metalness: 0.95,
+    });
+
+    // ── Luci ──────────────────────────────────────────────────────────────────
+    scene.add(new THREE.AmbientLight(0xffffff, 0.08));
+
+    const mainLight = new THREE.PointLight(0xffffff, 3.0, 0);
+    mainLight.position.set(-3, 3, 4);
+    scene.add(mainLight);
+
+    const fillLight = new THREE.PointLight(0xffffff, 0.5, 0);
+    fillLight.position.set(3, -2, 3);
+    scene.add(fillLight);
 
     // ── Render loop placeholder ───────────────────────────────────────────────
     renderer.setAnimationLoop(() => {
