@@ -1,0 +1,15 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "mirkobruni-landing",
+  "compatibility_date": "2026-06-27",
+  "workers_dev": false,
+  "assets": {
+    "directory": ".",
+    "exclude": [
+      ".git",
+      ".gitignore",
+      "wrangler.jsonc",
+      "docs"
+    ]
+  }
+}
