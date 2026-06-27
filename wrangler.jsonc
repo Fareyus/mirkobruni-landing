@@ -5,7 +5,9 @@
   "workers_dev": false,
   "routes": [
     { "pattern": "mirkobruni.it/*", "zone_name": "mirkobruni.it" },
-    { "pattern": "mirkobruni.it", "zone_name": "mirkobruni.it" }
+    { "pattern": "mirkobruni.it", "zone_name": "mirkobruni.it" },
+    { "pattern": "www.mirkobruni.it/*", "zone_name": "mirkobruni.it" },
+    { "pattern": "www.mirkobruni.it", "zone_name": "mirkobruni.it" }
   ],
   "assets": {
     "directory": ".",
